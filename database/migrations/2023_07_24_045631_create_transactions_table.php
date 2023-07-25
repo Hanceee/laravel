@@ -13,7 +13,7 @@ return new class extends Migration
     {
         Schema::create('transactions', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger('supplier_id');
+            $table->string('supplier_id');
             $table->date('transaction_date');
             $table->text('transaction_details');
             $table->decimal('price', 10, 2);
@@ -24,7 +24,7 @@ return new class extends Migration
             $table->integer('reliability_rating')->nullable();
             $table->text('comment')->nullable();
             $table->string('remarks')->nullable();
-            $table->unsignedBigInteger('user_id');
+            $table->string('user_id');
             $table->boolean('archived')->default(false);
             $table->timestamps();
 

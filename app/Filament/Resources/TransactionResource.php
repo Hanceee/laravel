@@ -20,6 +20,8 @@ use Filament\Forms\Components\Select;
 use Filament\Forms\Components\Textarea;
 use Filament\Forms\Components\DatePicker;
 use Filament\Forms\Components\Radio;
+use Filament\Forms\Components\Card;
+use Filament\Forms\Components\Grid;
 use Filament\Tables\Columns\SelectColumn;
 
 
@@ -35,56 +37,72 @@ class TransactionResource extends Resource
     {
         return $form
             ->schema([
-                Select::make('supplier_id')
-                ->label('Supplier')
-                ->options(Supplier::all()->pluck('supplier_name', 'id')),
-                DatePicker::make('transaction_date')->displayFormat('m/d/Y'),
-                Textarea::make('transaction_details'),
-                TextInput::make('price')->mask(fn (TextInput\Mask $mask) => $mask->money(prefix: '₱', thousandsSeparator: ',', decimalPlaces: 2)),
-                Radio::make('quality_rating')
-                ->options([
-                    '1' => '1',
-                    '2' => '2',
-                    '3' => '3',
-                    '4' => '4',
-                    '5' => '5'
-                ]),
-                Radio::make('delivery_rating')
-                ->options([
-                    '1' => '1',
-                    '2' => '2',
-                    '3' => '3',
-                    '4' => '4',
-                    '5' => '5'
-                ]),
-                Radio::make('pricing_rating')
-                ->options([
-                    '1' => '1',
-                    '2' => '2',
-                    '3' => '3',
-                    '4' => '4',
-                    '5' => '5'
-                ]),
-                Radio::make('customer_service_rating')
-                ->options([
-                    '1' => '1',
-                    '2' => '2',
-                    '3' => '3',
-                    '4' => '4',
-                    '5' => '5'
-                ]),
-                Radio::make('reliability_rating')
-                ->options([
-                    '1' => '1',
-                    '2' => '2',
-                    '3' => '3',
-                    '4' => '4',
-                    '5' => '5'
-                ]),
-                Textarea::make('comment'),
-                Select::make('user_id')
-                ->label('User')
-                ->options(User::all()->pluck('name', 'id'))
+                Card::make()
+    ->schema([
+        Select::make('user_id')
+        ->label('User')
+        ->options(User::all()->pluck('name', 'name')),
+        Select::make('supplier_id')
+        ->label('Supplier')
+        ->options(Supplier::all()->pluck('supplier_name', 'supplier_name')),
+        Select::make('remarks')
+        ->options([
+            'processing' => 'Processing',
+            'cancelled' => 'Cancelled',
+            'closed' => 'Closed',
+        ])
+        ->default('processing'),
+        DatePicker::make('transaction_date')->displayFormat('m/d/Y'),
+        Textarea::make('transaction_details'),
+        TextInput::make('price')->mask(fn (TextInput\Mask $mask) => $mask->money(prefix: '₱', thousandsSeparator: ',', decimalPlaces: 2))
+    ]),
+
+    Grid::make()
+    ->schema([
+        Radio::make('quality_rating')
+        ->options([
+            '1' => '1',
+            '2' => '2',
+            '3' => '3',
+            '4' => '4',
+            '5' => '5'
+        ]),
+        Radio::make('delivery_rating')
+        ->options([
+            '1' => '1',
+            '2' => '2',
+            '3' => '3',
+            '4' => '4',
+            '5' => '5'
+        ]),
+        Radio::make('pricing_rating')
+        ->options([
+            '1' => '1',
+            '2' => '2',
+            '3' => '3',
+            '4' => '4',
+            '5' => '5'
+        ]),
+        Radio::make('customer_service_rating')
+        ->options([
+            '1' => '1',
+            '2' => '2',
+            '3' => '3',
+            '4' => '4',
+            '5' => '5'
+        ]),
+        Radio::make('reliability_rating')
+        ->options([
+            '1' => '1',
+            '2' => '2',
+            '3' => '3',
+            '4' => '4',
+            '5' => '5'
+        ]),
+        Textarea::make('comment')
+    ])
+
+
 
             ]);
     }
@@ -103,12 +121,7 @@ class TransactionResource extends Resource
                 TextColumn::make('customer_service_rating'),
                 TextColumn::make('reliability_rating'),
                 TextColumn::make('comment'),
-                SelectColumn::make('remarks')
-                ->options([
-                    'draft' => 'Draft',
-                    'reviewing' => 'Reviewing',
-                    'published' => 'Published',
-                ]),
+                TextColumn::make('remarks'),
                 TextColumn::make('user_id'),
 
             ])

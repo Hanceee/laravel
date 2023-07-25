@@ -5,6 +5,7 @@ namespace App\Filament\Resources;
 use App\Filament\Resources\SupplierResource\Pages;
 use App\Filament\Resources\SupplierResource\RelationManagers;
 use App\Models\Category;
+use App\Models\Transaction;
 use App\Models\Supplier;
 use Filament\Forms;
 use Filament\Resources\Form;
@@ -17,7 +18,7 @@ use Filament\Forms\Components\TextInput;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Forms\Components\Select;
 use Filament\Tables\Columns\SelectColumn;
-
+use Filament\Tables\Columns\DateColumn;
 use Filament\Forms\Components\Textarea;
 
 
@@ -34,7 +35,7 @@ class SupplierResource extends Resource
             ->schema([
                 Select::make('category_id')
             ->label('Category')
-            ->options(Category::all()->pluck('category_name', 'id')),
+            ->options(Category::all()->pluck('category_name', 'category_name')),
             TextInput::make('supplier_name'),
             TextInput::make('representative_name'),
             TextInput::make('designation'),
@@ -54,12 +55,10 @@ class SupplierResource extends Resource
     {
         return $table
             ->columns([
+                TextColumn::make('id'),
+                TextColumn::make('category_id')->label('Category'),
                 TextColumn::make('supplier_name'),
                 TextColumn::make('representative_name'),
-                TextColumn::make('category_id'),
-                TextColumn::make('total_ratings'),
-                TextColumn::make('supplier_status'),
-                TextColumn::make('created_at'),
                 TextColumn::make('supplier_notes'),
                 SelectColumn::make('supplier_status')
                 ->options([
@@ -74,6 +73,7 @@ class SupplierResource extends Resource
             ])
             ->actions([
                 Tables\Actions\EditAction::make(),
+
             ])
             ->bulkActions([
                 Tables\Actions\DeleteBulkAction::make(),
